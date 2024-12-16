@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kekasih Impian</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    #lyrics {
+      font-size: 1.5rem;
+      color: #333;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    audio {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dengar yah sayang... ❤️</h1>
+  <div id="lyrics"></div> <!-- Tempat untuk lirik -->
+  <script>
+    // Ambil data dari localStorage
+    const audioSrc = localStorage.getItem('audioSrc');
+    const lyrics = JSON.parse(localStorage.getItem('lyrics'));
+
+    // Buat audio
+    const audio = document.createElement('audio');
+    audio.src = audioSrc;
+    audio.controls = true;
+    audio.autoplay = true;
+
+    // Tambahkan audio ke halaman
+    document.body.appendChild(audio);
+
+    // Menampilkan lirik
+    const lyricsDiv = document.getElementById('lyrics');
+    let displayedLyrics = null;
+
+    function updateLyrics() {
+      const currentTime = Math.floor(audio.currentTime);
+      const currentLyric = lyrics.find(lyric => lyric.time === currentTime);
+
+      if (currentLyric && currentLyric.text !== displayedLyrics) {
+        lyricsDiv.textContent = currentLyric.text;
+        displayedLyrics = currentLyric.text; // Hindari pengulangan
+      }
+    }
+
+    // Perbarui lirik setiap detik
+    setInterval(updateLyrics, 1000);
+  </script>
+</body>
+</html>
